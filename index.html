@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100b1d">
+<title>Mirrorworld AI — Image Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0812;--panel:#151020;--line:#302342;--purple:#a78bfa;--pink:#e879f9;--text:#f7f2ff;--muted:#b7a9c9}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#39205c 0,transparent 45%),var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100vh}
+.wrap{max-width:1040px;margin:auto;padding:22px 18px 50px}.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 30px}.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.04em}.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#e879f9);display:grid;place-items:center;box-shadow:0 0 28px #a855f755}.logo svg{width:25px}.pill{font-size:12px;border:1px solid #4d3868;border-radius:999px;padding:7px 11px;color:#d7c7f2;background:#1c1429}
+.hero{text-align:center;padding:24px 0 30px}.eyebrow{color:#d8b4fe;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:800}.hero h1{font-size:clamp(34px,7vw,58px);line-height:1.04;letter-spacing:-.045em;margin:15px 0}.gradient{background:linear-gradient(90deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:600px;margin:0 auto;color:var(--muted);line-height:1.65;font-size:15px}
+.card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(160deg,#191226f5,#100c18f5);padding:clamp(16px,4vw,28px);box-shadow:0 18px 60px #0005}.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.upload{border:1px dashed #5b4675;border-radius:17px;padding:20px 14px;text-align:center;min-height:175px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:#130e1d}.upload input{width:100%;font-size:12px;color:var(--muted)}.upload h3{margin:0;font-size:15px}.upload p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.preview{width:100%;max-height:210px;object-fit:contain;border-radius:12px;display:none}.btn{border:0;border-radius:13px;padding:14px 17px;font-weight:800;font-size:14px;cursor:pointer;color:#170d24;background:linear-gradient(100deg,#c4b5fd,#f0abfc);width:100%;margin-top:16px}.btn:disabled{opacity:.45;cursor:not-allowed}.notice{margin-top:15px;border:1px solid #3a2b4c;border-radius:13px;padding:12px;color:#c8b8d9;font-size:12px;line-height:1.55;background:#100b18}.result{margin-top:22px;display:none}.result h2{font-size:18px}.resultbox{border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;color:var(--muted);line-height:1.6}.resultbox a{color:#e9d5ff}.footer{text-align:center;color:#8f819f;font-size:11px;line-height:1.7;margin:24px auto 0;max-width:720px}
+@media(max-width:560px){.steps{grid-template-columns:1fr}.upload{min-height:150px}.nav{padding-bottom:20px}.hero{padding-top:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="nav">
+ <div class="brand"><div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M3 12s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.8"/><path d="m17.5 4 .7 1.8L20 6.5l-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></div><span>MIRRORWORLD <span class="gradient">AI</span></span></div>
+ <span class="pill">IMAGE STUDIO · PREVIEW</span>
+</header>
+<section class="hero">
+ <div class="eyebrow">Your creative transformation studio</div>
+ <h1>See a new side of <span class="gradient">yourself.</span></h1>
+ <p>Upload images you own or have permission to edit. This starter website previews your files locally while the real AI processing service is being connected.</p>
+</section>
+<section class="card">
+ <div class="steps">
+  <div class="upload">
+   <h3>01 · Source face</h3><p>Choose a clear image of the person whose face will be used, with their permission.</p>
+   <input id="source" type="file" accept="image/png,image/jpeg,image/webp">
+   <img id="sourcePreview" class="preview" alt="Source image preview">
+  </div>
+  <div class="upload">
+   <h3>02 · Target image</h3><p>Choose the image you have permission to transform.</p>
+   <input id="target" type="file" accept="image/png,image/jpeg,image/webp">
+   <img id="targetPreview" class="preview" alt="Target image preview">
+  </div>
+ </div>
+ <button class="btn" id="process" disabled>Prepare preview</button>
+ <div class="notice"><strong>Privacy & consent:</strong> Use only images you own or have permission to edit. This preview runs in your browser and does not upload images. It does not perform a real face swap yet. AI-generated or edited results should be clearly disclosed.</div>
+ <div id="result" class="result">
+  <h2>Your image selections</h2>
+  <div class="resultbox" id="resultText">Preview prepared.</div>
+ </div>
+</section>
+<div class="footer">MIRRORWORLD AI · EARLY ACCESS<br>This is a starter interface, not a functioning deepfake engine or license activation service. Real AI processing requires a compatible backend and model with suitable licensing and compute.</div>
+</div>
+<script>
+const source=document.getElementById('source'),target=document.getElementById('target'),button=document.getElementById('process');
+function preview(input,img){const file=input.files&&input.files[0];if(!file)return;if(!['image/jpeg','image/png','image/webp'].includes(file.type)){alert('Please choose a JPG, PNG, or WebP image.');input.value='';return;}if(file.size>10*1024*1024){alert('Please choose an image smaller than 10 MB.');input.value='';return;}img.src=URL.createObjectURL(file);img.style.display='block';input.parentElement.querySelector('p').style.display='none';button.disabled=!(source.files.length&&target.files.length);}
+source.addEventListener('change',()=>preview(source,document.getElementById('sourcePreview')));
+target.addEventListener('change',()=>preview(target,document.getElementById('targetPreview')));
+button.addEventListener('click',()=>{document.getElementById('result').style.display='block';document.getElementById('resultText').textContent='Both images are selected. This starter build does not yet run AI face-swapping. No image has been uploaded. Connect a compatible, consent-based AI backend to enable real processing.';});
+</script>
+</body>
+</html>
